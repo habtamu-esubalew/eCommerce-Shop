@@ -55,6 +55,16 @@ export function UserMenu() {
     dispatch(toggleTheme());
   };
 
+  if (!mounted) {
+    return (
+      <div className="flex items-center gap-1">
+        <div className="h-9 w-9 sm:h-10 sm:w-10" />
+        <div className="h-9 w-9 sm:h-10 sm:w-10" />
+        <div className="h-9 w-9 sm:h-10 sm:w-10" />
+      </div>
+    );
+  }
+
   // Unauthenticated State - Cart + Theme Toggle + Login Button
   if (!isAuthenticated) {
     return (
