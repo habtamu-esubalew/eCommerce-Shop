@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   keywords: ["ecommerce", "shop", "products", "nextjs"],
   authors: [{ name: "eCommerce Team" }],
   creator: "eCommerce Team",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/apple-icon.svg",
+  },
 };
 
 export default function RootLayout({

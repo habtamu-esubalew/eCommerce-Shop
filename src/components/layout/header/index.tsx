@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useAppSelector } from "@/store/hooks";
 import { Logo } from "./logo";
 import { SearchBar } from "./search-bar";
@@ -11,6 +11,11 @@ import { cn } from "@/lib/utils";
 
 function HeaderContent() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background border-b border-border/40 shadow-sm backdrop-blur-md bg-background/95 supports-[backdrop-filter]:bg-background/80 overflow-hidden">
@@ -24,7 +29,11 @@ function HeaderContent() {
         )}
       >
         <div className="flex-shrink-0 lg:hidden">
-          <MobileMenu isAuthenticated={isAuthenticated} />
+          {mounted ? (
+            <MobileMenu isAuthenticated={isAuthenticated} />
+          ) : (
+            <div className="h-10 w-10" />
+          )}
         </div>
 
         <div className="flex-shrink-0 min-w-0">

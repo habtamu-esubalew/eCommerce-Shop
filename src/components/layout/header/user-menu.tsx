@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { 
   User, 
@@ -39,6 +40,11 @@ export function UserMenu() {
   const cartCount = useAppSelector((state) =>
     state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
   );
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = () => {
     dispatch(logout());
