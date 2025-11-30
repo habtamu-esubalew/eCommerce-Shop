@@ -623,7 +623,7 @@ All components follow Shadcn UI patterns:
 
 ## 📄 License
 
-This project is created for Zemenay Comunnity by Habtamu Esubalew
+This project is created for Zemenay Community by Habtamu Esubalew
 
 ---
 
