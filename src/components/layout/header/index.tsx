@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useAppSelector } from "@/store/hooks";
 import { Logo } from "./logo";
 import { SearchBar } from "./search-bar";
@@ -8,7 +9,7 @@ import { MobileMenu } from "./mobile-menu";
 import { spacing } from "@/lib/tailwind-utils";
 import { cn } from "@/lib/utils";
 
-export function Header() {
+function HeaderContent() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   return (
@@ -39,5 +40,21 @@ export function Header() {
         </div>
       </div>
     </header>
+  );
+}
+
+export function Header() {
+  return (
+    <Suspense fallback={
+      <header className="sticky top-0 z-50 w-full bg-background border-b border-border/40 shadow-sm">
+        <div className={cn(spacing.container, "flex items-center h-14 sm:h-16 lg:h-20")}>
+          <div className="flex-shrink-0 min-w-0">
+            <Logo className="scale-90 sm:scale-95 lg:scale-100" />
+          </div>
+        </div>
+      </header>
+    }>
+      <HeaderContent />
+    </Suspense>
   );
 }

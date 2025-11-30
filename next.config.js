@@ -20,10 +20,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  // ESLint configuration
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
 };
 
 module.exports = nextConfig;

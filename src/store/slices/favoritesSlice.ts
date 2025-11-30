@@ -16,7 +16,7 @@ const favoritesSlice = createSlice({
     addToFavorites: (state, action: PayloadAction<Product>) => {
       const exists = state.items.some((item) => item.id === action.payload.id);
       if (!exists) {
-        state.items.push(action.payload);
+        state.items.push({ ...action.payload, images: [...action.payload.images] });
       }
     },
     removeFromFavorites: (state, action: PayloadAction<number>) => {
@@ -25,7 +25,7 @@ const favoritesSlice = createSlice({
     toggleFavorite: (state, action: PayloadAction<Product>) => {
       const index = state.items.findIndex((item) => item.id === action.payload.id);
       if (index === -1) {
-        state.items.push(action.payload);
+        state.items.push({ ...action.payload, images: [...action.payload.images] });
       } else {
         state.items.splice(index, 1);
       }

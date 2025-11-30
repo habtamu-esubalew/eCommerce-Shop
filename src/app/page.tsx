@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/product/product-card";
 import { ProductCardSkeleton } from "@/components/product/product-card-skeleton";
@@ -21,7 +21,7 @@ import { isValidCategory } from "@/lib/category-utils";
 import { useCategoryName } from "@/hooks/use-category-name";
 import { cn } from "@/lib/utils";
 
-export default function HomePage() {
+function HomePageContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
   const category = categoryParam && typeof categoryParam === "string" ? categoryParam : "";
@@ -212,6 +212,24 @@ export default function HomePage() {
         </div>
       </div>
     </MainLayout>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={
+      <MainLayout>
+        <div className={spacing.section}>
+          <div className={spacing.container}>
+            <div className="flex items-center justify-center min-h-[60vh]">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          </div>
+        </div>
+      </MainLayout>
+    }>
+      <HomePageContent />
+    </Suspense>
   );
 }
 

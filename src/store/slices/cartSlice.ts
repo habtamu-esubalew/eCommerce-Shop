@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "@/types";
 
 export interface CartItem {
-  readonly product: Product;
-  readonly quantity: number;
+  product: Product;
+  quantity: number;
 }
 
 interface CartState {
@@ -50,7 +50,10 @@ const cartSlice = createSlice({
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        state.items.push({ product, quantity });
+        state.items.push({ 
+          product: { ...product, images: [...product.images] }, 
+          quantity 
+        });
       }
 
       saveCartToStorage(state.items);
@@ -77,7 +80,11 @@ const cartSlice = createSlice({
       saveCartToStorage(state.items);
     },
     initializeCart: (state) => {
-      state.items = loadCartFromStorage();
+      const loaded = loadCartFromStorage();
+      state.items = loaded.map(item => ({
+        product: { ...item.product, images: [...item.product.images] },
+        quantity: item.quantity
+      }));
     },
   },
 });

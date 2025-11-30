@@ -86,10 +86,11 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
+        const products = action.payload.products.map(p => ({ ...p, images: [...p.images] }));
         if (action.meta.arg.skip === 0) {
-          state.items = action.payload.products;
+          state.items = products;
         } else {
-          state.items = [...state.items, ...action.payload.products];
+          state.items = [...state.items, ...products];
         }
         state.total = action.payload.total;
         state.skip = action.payload.skip;
@@ -105,23 +106,37 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentProduct = action.payload;
+        const product = action.payload;
+        state.currentProduct = {
+          ...product,
+          images: [...product.images],
+          tags: product.tags ? [...product.tags] : undefined,
+          reviews: product.reviews ? [...product.reviews] : undefined,
+        };
       })
       .addCase(fetchProductById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch product";
       })
       .addCase(createProduct.fulfilled, (state, action) => {
-        state.items.unshift(action.payload);
+        state.items.unshift({ ...action.payload, images: [...action.payload.images] });
         state.total += 1;
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-        const index = state.items.findIndex((p) => p.id === action.payload.id);
+        const product = action.payload;
+        const mutableProduct = { ...product, images: [...product.images] };
+        const index = state.items.findIndex((p) => p.id === product.id);
         if (index !== -1) {
-          state.items[index] = action.payload;
+          state.items[index] = mutableProduct;
         }
-        if (state.currentProduct?.id === action.payload.id) {
-          state.currentProduct = action.payload;
+        if (state.currentProduct?.id === product.id) {
+          const detail = product as ProductDetail;
+          state.currentProduct = {
+            ...detail,
+            images: [...detail.images],
+            tags: detail.tags ? [...detail.tags] : undefined,
+            reviews: detail.reviews ? [...detail.reviews] : undefined,
+          };
         }
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
