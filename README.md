@@ -320,8 +320,8 @@ src/
 1. **Clone the repository**:
 
 ```bash
-git clone <repository-url>
-cd ecommerce
+git clone https://github.com/habtamu-esubalew/eCommerce-Shop
+cd ecommerce-Shop
 ```
 
 2. **Install dependencies**:
@@ -588,65 +588,6 @@ All components follow Shadcn UI patterns:
 - `npm run lint` - Run ESLint for code quality
 - `npm run type-check` - Run TypeScript compiler check
 
-## 🎯 Evaluation Criteria Coverage
-
-✅ **Code Organization**:
-
-- Clean folder structure
-- Reusable components
-- Separation of concerns
-- Consistent naming conventions
-
-✅ **React Hooks**:
-
-- useState, useEffect, useMemo, useCallback
-- Custom hooks for business logic
-- Proper dependency arrays
-- Performance optimizations
-
-✅ **Redux Toolkit**:
-
-- Comprehensive state management
-- Async thunks for API calls
-- Proper slice structure
-- Type-safe actions and state
-
-✅ **Shadcn UI**:
-
-- Professional UI components
-- Accessible components
-- Consistent design system
-- Customizable variants
-
-✅ **Pagination**:
-
-- Infinite scroll implementation
-- Load more functionality
-- Loading states
-- Error handling
-
-✅ **CRUD Operations**:
-
-- Create: Product creation form
-- Read: Product listing and details
-- Update: Product edit with PATCH
-- Delete: Product deletion with confirmation
-
-✅ **Error Handling**:
-
-- Toast notifications
-- Error boundaries
-- User-friendly messages
-- Retry mechanisms
-
-✅ **UI/UX**:
-
-- Loading states (skeletons, spinners)
-- Responsive design (mobile, tablet, desktop)
-- Dark mode support
-- Smooth animations
-- Accessibility features
-
 ## 🚀 Additional Features
 
 - **Shopping Cart**: Full cart functionality with persistence
@@ -672,22 +613,6 @@ All components follow Shadcn UI patterns:
 - **Error Sanitization**: Safe error messages
 - **Hydration Safety**: Prevents SSR/client mismatches
 
-## 🐛 Technical Improvements
-
-### Hydration Error Fixes
-
-- **Suspense Boundaries**: All `useSearchParams` usage wrapped in Suspense
-- **Mounted State Checks**: Client-side only rendering for auth-dependent components
-- **Consistent SSR**: Server and client render identical HTML during hydration
-- **Theme Script**: Inline script prevents theme flash before hydration
-
-### TypeScript & Build Fixes
-
-- **Redux Toolkit Compatibility**: Fixed readonly type issues with WritableDraft
-- **Mutable Copies**: Created mutable copies of readonly products in Redux slices
-- **Type Safety**: All TypeScript errors resolved, build passes successfully
-- **ESLint Configuration**: Removed deprecated Next.js config, using .eslintrc.json
-
 ## 📱 Browser Support
 
 - Chrome (latest)
@@ -696,30 +621,13 @@ All components follow Shadcn UI patterns:
 - Edge (latest)
 - Mobile browsers (iOS Safari, Chrome Mobile)
 
-## 🤝 Contributing
-
-This is an evaluation project. For questions or improvements, please refer to the project requirements.
-
 ## 📄 License
 
-This project is created for evaluation purposes.
+This project is created for Zemenay Comunnity by Habtamu Esubalew
 
 ---
 
-**Built with ❤️ using Next.js 16, React 19, and modern web technologies**
+**Built by Habtamu Esubalew using Next.js 16, React 19, and modern web technologies**
 
 **Version**: 0.1.0  
 **Last Updated**: December 2024
-
-## 📋 Recent Updates
-
-- ✅ Added custom favicon (shopping cart icon)
-- ✅ Fixed hydration errors with Suspense boundaries
-- ✅ Resolved all TypeScript build errors
-- ✅ Improved mobile responsiveness
-- ✅ Enhanced header layout and spacing
-- ✅ Added cart functionality with persistence
-- ✅ Fixed theme toggle visibility
-- ✅ Optimized component rendering for SSR
-- ✅ Cleaned up all comments and unused code
-- ✅ Updated dependencies to latest versions
