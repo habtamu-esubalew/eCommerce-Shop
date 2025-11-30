@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { MainLayout } from "@/components/layout/main-layout";
 import { ProductCard } from "@/components/product/product-card";
 import { ProductCardSkeleton } from "@/components/product/product-card-skeleton";
@@ -7,9 +9,25 @@ import { useAppSelector } from "@/store/hooks";
 import { Heart } from "lucide-react";
 import { spacing, typography, layout } from "@/lib/tailwind-utils";
 import { cn } from "@/lib/utils";
+import { ROUTES } from "@/lib/constants";
+import { toast } from "sonner";
 
 export default function FavoritesPage() {
+  const router = useRouter();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const favorites = useAppSelector((state) => state.favorites.items);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.error("Please log in to access your favorites");
+      router.push(ROUTES.LOGIN);
+    }
+  }, [isAuthenticated, router]);
+
+  // Don't render favorites content if not authenticated
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <MainLayout>

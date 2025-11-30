@@ -24,6 +24,7 @@ import {
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { toggleTheme } from "@/store/slices/themeSlice";
 import { logout } from "@/store/slices/authSlice";
+import { clearFavorites } from "@/store/slices/favoritesSlice";
 import { toast } from "sonner";
 import { ROUTES } from "@/lib/constants";
 import { transitions } from "@/lib/tailwind-utils";
@@ -48,6 +49,7 @@ export function UserMenu() {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(clearFavorites());
     toast.success("Logged out successfully");
   };
 

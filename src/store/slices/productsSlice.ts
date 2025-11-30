@@ -107,9 +107,14 @@ const productsSlice = createSlice({
       .addCase(fetchProductById.fulfilled, (state, action) => {
         state.loading = false;
         const product = action.payload;
+        const images = Array.isArray(product.images) 
+          ? [...product.images] 
+          : product.images 
+            ? [product.images] 
+            : [];
         state.currentProduct = {
           ...product,
-          images: [...product.images],
+          images,
           tags: product.tags ? [...product.tags] : undefined,
           reviews: product.reviews ? [...product.reviews] : undefined,
         };
@@ -119,12 +124,23 @@ const productsSlice = createSlice({
         state.error = action.error.message || "Failed to fetch product";
       })
       .addCase(createProduct.fulfilled, (state, action) => {
-        state.items.unshift({ ...action.payload, images: [...action.payload.images] });
+        const product = action.payload;
+        const images = Array.isArray(product.images) 
+          ? [...product.images] 
+          : product.images 
+            ? [product.images] 
+            : [];
+        state.items.unshift({ ...product, images });
         state.total += 1;
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
         const product = action.payload;
-        const mutableProduct = { ...product, images: [...product.images] };
+        const images = Array.isArray(product.images) 
+          ? [...product.images] 
+          : product.images 
+            ? [product.images] 
+            : [];
+        const mutableProduct = { ...product, images };
         const index = state.items.findIndex((p) => p.id === product.id);
         if (index !== -1) {
           state.items[index] = mutableProduct;
@@ -133,7 +149,7 @@ const productsSlice = createSlice({
           const detail = product as ProductDetail;
           state.currentProduct = {
             ...detail,
-            images: [...detail.images],
+            images,
             tags: detail.tags ? [...detail.tags] : undefined,
             reviews: detail.reviews ? [...detail.reviews] : undefined,
           };

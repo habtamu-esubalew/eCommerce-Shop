@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 import { Providers } from "@/components/providers";
 import { Toaster } from "sonner";
 import { ErrorBoundary } from "@/components/error-boundary";
@@ -16,13 +16,13 @@ export const metadata: Metadata = {
     default: "eCommerce Shop",
     template: "%s | eCommerce Shop",
   },
-  description: "Modern eCommerce application built with Next.js 15 and React 19",
-  keywords: ["ecommerce", "shop", "products", "nextjs"],
-  authors: [{ name: "eCommerce Team" }],
-  creator: "eCommerce Team",
+  description: "Modern eCommerce application built for Zemenay Community",
+  keywords: ["ecommerce", "shop", "products", "nextjs", "zemenay"],
+  authors: [{ name: "Habtamu Esubalew" }],
+  creator: "Habtamu Esubalew",
   icons: {
-    icon: "/icon.svg",
-    apple: "/apple-icon.svg",
+    icon: "/icons/icon.svg",
+    apple: "/icons/apple-icon.svg",
   },
 };
 

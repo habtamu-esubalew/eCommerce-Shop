@@ -8,9 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Star, Package, ShoppingCart } from "lucide-react";
 import { Product } from "@/types";
 import { useFavorites } from "@/hooks/use-favorites";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/slices/cartSlice";
 import { ROUTES } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 import { effects, transitions } from "@/lib/tailwind-utils";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -22,11 +23,20 @@ interface ProductCardProps {
 
 export function ProductCard({ product, className }: ProductCardProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { isFavorite, toggle } = useFavorites();
 
   const handleToggleFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    if (!isAuthenticated) {
+      toast.error("Please log in to add items to favorites");
+      router.push(ROUTES.LOGIN);
+      return;
+    }
+    
     toggle(product);
   };
 
@@ -105,7 +115,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             </span>
           </div>
         </CardContent>
-        <CardFooter className="p-4 pt-0 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+        <CardFooter className="p-4 pt-0 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <div>
             <p className="text-2xl font-bold">${product.price.toFixed(2)}</p>
             {product.discountPercentage > 0 && (
@@ -118,21 +128,16 @@ export function ProductCard({ product, className }: ProductCardProps) {
               </p>
             )}
           </div>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleAddToCart}
-              className={transitions.default}
-              disabled={product.stock === 0}
-            >
-              <ShoppingCart className="h-4 w-4 mr-1.5" />
-              Add to Cart
-            </Button>
-            <Button size="sm" className={transitions.default}>
-              View Details
-            </Button>
-          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleAddToCart}
+            className={cn(transitions.default, "w-full sm:w-auto")}
+            disabled={product.stock === 0}
+          >
+            <ShoppingCart className="h-4 w-4 mr-1.5" />
+            Add to Cart
+          </Button>
         </CardFooter>
       </Card>
     </Link>

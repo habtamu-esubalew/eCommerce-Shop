@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { ArrowUpDown } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -28,12 +29,21 @@ export function ProductSort({ value, onValueChange, className, compact = false }
       <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger
           id="product-sort-mobile"
-          className="w-[140px] h-10"
+          className={cn(
+            "w-full sm:w-[160px] h-11",
+            "bg-background border-border/60",
+            "hover:border-primary/50 hover:bg-accent/50",
+            "transition-all duration-200",
+            "shadow-sm hover:shadow-md",
+            "text-sm font-medium",
+            "px-3 gap-2"
+          )}
           aria-label="Sort products"
         >
-          <SelectValue placeholder="Sort">
-            {selectedLabel}
-          </SelectValue>
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <ArrowUpDown className="h-4 w-4 text-muted-foreground flex-shrink-0" aria-hidden="true" />
+            <SelectValue placeholder="Sort" className="flex-1 min-w-0 text-left truncate" />
+          </div>
         </SelectTrigger>
         <SelectContent>
           {SORT_OPTIONS.map((option) => (

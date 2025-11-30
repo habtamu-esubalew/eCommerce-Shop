@@ -48,6 +48,7 @@ import {
 import { spacing, typography, layout } from "@/lib/tailwind-utils";
 import { cn } from "@/lib/utils";
 import { ProductDetail } from "@/types";
+import { ROUTES } from "@/lib/constants";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -76,6 +77,12 @@ export default function ProductDetailPage() {
   }, [dispatch, productId]);
 
   const handleToggleFavorite = () => {
+    if (!isAuthenticated) {
+      toast.error("Please log in to add items to favorites");
+      router.push(ROUTES.LOGIN);
+      return;
+    }
+    
     if (product) {
       dispatch(toggleFavorite(product));
       toast.success(
@@ -362,7 +369,7 @@ export default function ProductDetailPage() {
                     
                     {isAuthenticated && (
                       <>
-                        <Link href={`/product/${productId}/edit`}>
+                        <Link href={ROUTES.PRODUCT_EDIT(productId)}>
                           <Button 
                             size="lg" 
                             variant="outline" 
@@ -589,3 +596,4 @@ export default function ProductDetailPage() {
     </MainLayout>
   );
 }
+

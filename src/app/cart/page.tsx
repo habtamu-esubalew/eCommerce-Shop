@@ -25,6 +25,7 @@ import { ROUTES } from "@/lib/constants";
 export default function CartPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const cartItems = useAppSelector((state) => state.cart.items);
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -285,7 +286,14 @@ export default function CartPage() {
                     <Button
                       size="lg"
                       className="w-full"
-                      onClick={() => toast.info("Checkout functionality coming soon")}
+                      onClick={() => {
+                        if (!isAuthenticated) {
+                          toast.error("Please log in to proceed to checkout");
+                          router.push(ROUTES.LOGIN);
+                          return;
+                        }
+                        toast.info("Checkout functionality coming soon");
+                      }}
                     >
                       Proceed to Checkout
                     </Button>
@@ -305,4 +313,5 @@ export default function CartPage() {
     </MainLayout>
   );
 }
+
 

@@ -21,6 +21,7 @@ interface ProductFiltersProps {
   hasActiveFilters: boolean;
   className?: string;
   mobileOnly?: boolean;
+  hideMobileButton?: boolean;
 }
 
 export function ProductFilters({
@@ -31,6 +32,7 @@ export function ProductFilters({
   hasActiveFilters,
   className,
   mobileOnly = false,
+  hideMobileButton = false,
 }: ProductFiltersProps) {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([0, 10000]);
@@ -286,27 +288,29 @@ export function ProductFilters({
         </div>
       </aside>
 
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" className="lg:hidden" aria-label="Open filters">
-            <Filter className="h-4 w-4 mr-2" />
-            Filters
-            {hasActiveFilters && (
-              <span className="ml-2 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
-                {filterCount}
-              </span>
-            )}
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-[300px] sm:w-[400px] p-0 flex flex-col max-h-screen">
-          <SheetHeader className="px-6 py-4 border-b flex-shrink-0">
-            <SheetTitle>Filters</SheetTitle>
-          </SheetHeader>
-          <div className="flex-1 overflow-y-auto px-6 py-4 pb-12">
-            <FilterContent />
-          </div>
-        </SheetContent>
-      </Sheet>
+      {!hideMobileButton && (
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" className="lg:hidden" aria-label="Open filters">
+              <Filter className="h-4 w-4 mr-2" />
+              Filters
+              {hasActiveFilters && (
+                <span className="ml-2 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
+                  {filterCount}
+                </span>
+              )}
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[300px] sm:w-[400px] p-0 flex flex-col max-h-screen">
+            <SheetHeader className="px-6 py-4 border-b flex-shrink-0">
+              <SheetTitle>Filters</SheetTitle>
+            </SheetHeader>
+            <div className="flex-1 overflow-y-auto px-6 py-4 pb-12">
+              <FilterContent />
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
     </>
   );
 }

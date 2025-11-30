@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, Suspense } from "react";
+import { useMemo, Suspense, useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/product/product-card";
 import { ProductCardSkeleton } from "@/components/product/product-card-skeleton";
@@ -49,8 +49,42 @@ function HomePageContent() {
     return applyFiltersAndSort(allProducts, filters, sort);
   }, [allProducts, filters, sort]);
 
+
+  const prevFilteredCountRef = useRef(filteredAndSortedProducts.length);
+  const prevAllProductsCountRef = useRef(allProducts.length);
+  const [hasMoreFilteredProducts, setHasMoreFilteredProducts] = useState(true);
+
+  useEffect(() => {
+    prevFilteredCountRef.current = filteredAndSortedProducts.length;
+    prevAllProductsCountRef.current = allProducts.length;
+    setHasMoreFilteredProducts(true);
+  }, [hasActiveFilters, filters, sort]);
+
+ 
+  useEffect(() => {
+    if (!isLoadingMore && hasActiveFilters && prevAllProductsCountRef.current > 0) {
+      const currentFilteredCount = filteredAndSortedProducts.length;
+      const currentAllProductsCount = allProducts.length;
+      
+    
+      if (currentFilteredCount === prevFilteredCountRef.current && 
+          currentAllProductsCount > prevAllProductsCountRef.current) {
+        setHasMoreFilteredProducts(false);
+      } else if (currentFilteredCount > prevFilteredCountRef.current) {
+        setHasMoreFilteredProducts(true);
+      }
+      
+      prevFilteredCountRef.current = currentFilteredCount;
+      prevAllProductsCountRef.current = currentAllProductsCount;
+    }
+  }, [isLoadingMore, filteredAndSortedProducts.length, allProducts.length, hasActiveFilters]);
+
+  
+  const shouldEnableInfiniteScroll = hasMore && filteredAndSortedProducts.length > 0 && 
+    (!hasActiveFilters || hasMoreFilteredProducts);
+  
   const { sentinelRef } = useInfiniteScroll({
-    hasMore,
+    hasMore: shouldEnableInfiniteScroll,
     isLoading: isLoadingMore || loading,
     onLoadMore: loadMore,
   });
@@ -79,7 +113,7 @@ function HomePageContent() {
                   mobileOnly={true}
                 />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end items-center">
                 <ProductSort value={sort} onValueChange={updateSort} compact={true} />
               </div>
             </div>
@@ -127,6 +161,7 @@ function HomePageContent() {
                 onReset={resetFilters}
                 hasActiveFilters={hasActiveFilters}
                 mobileOnly={false}
+                hideMobileButton={true}
               />
 
               <div className="flex-1 space-y-4">
@@ -189,19 +224,11 @@ function HomePageContent() {
                       </div>
                     </div>
 
-                    {hasMore && (
+                    {shouldEnableInfiniteScroll && (
                       <div ref={sentinelRef} className="flex justify-center py-8">
                         {isLoadingMore && (
                           <Loader2 className="h-6 w-6 animate-spin text-primary" aria-label="Loading more products" />
                         )}
-                      </div>
-                    )}
-
-                    {hasMore && !isLoadingMore && (
-                      <div className="flex justify-center py-4">
-                        <Button onClick={loadMore} variant="outline">
-                          Load More
-                        </Button>
                       </div>
                     )}
                   </>

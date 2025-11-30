@@ -43,6 +43,7 @@ import { fetchCategories } from "@/services/api";
 import { Category } from "@/types";
 import { spacing, typography } from "@/lib/tailwind-utils";
 import { cn } from "@/lib/utils";
+import { ROUTES } from "@/lib/constants";
 
 export default function EditProductPage() {
   const params = useParams();
@@ -104,7 +105,7 @@ export default function EditProductPage() {
   }, [currentProduct]);
 
   if (!isAuthenticated) {
-    router.push("/login");
+    router.push(ROUTES.LOGIN);
     return null;
   }
 
@@ -129,7 +130,7 @@ export default function EditProductPage() {
           <div className={spacing.container}>
             <div className="flex flex-col items-center justify-center min-h-[60vh]">
               <p className="text-destructive mb-4">Product not found</p>
-              <Button onClick={() => router.push("/")}>Go Back</Button>
+              <Button onClick={() => router.push(ROUTES.HOME)}>Go Back</Button>
             </div>
           </div>
         </div>
@@ -156,7 +157,7 @@ export default function EditProductPage() {
 
       await dispatch(updateProduct({ id: productId, data: productData })).unwrap();
       toast.success("Product updated successfully!");
-      router.push(`/product/${productId}`);
+      router.push(ROUTES.PRODUCT_DETAIL(productId));
     } catch (error: any) {
       toast.error(error.message || "Failed to update product");
     } finally {
@@ -182,7 +183,7 @@ export default function EditProductPage() {
             <div className="space-y-4 pt-4">
               <Button
                 variant="ghost"
-                onClick={() => router.push(`/product/${productId}`)}
+                onClick={() => router.push(ROUTES.PRODUCT_DETAIL(productId))}
                 className="mb-2"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />

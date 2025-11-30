@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   fetchProducts,
@@ -29,6 +29,7 @@ export function useProducts(options: UseProductsOptions = {}) {
   const { items, loading, error, total, skip: currentSkip, limit: currentLimit, searchQuery } =
     useAppSelector((state) => state.products);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const loadMoreRef = useRef(false);
 
   const loadProducts = useCallback(
     async (params?: { skip?: number; limit?: number; search?: string; category?: string }) => {
@@ -51,10 +52,12 @@ export function useProducts(options: UseProductsOptions = {}) {
   );
 
   const loadMore = useCallback(async () => {
-    if (currentSkip + currentLimit >= total || isLoadingMore || loading) {
+    // Prevent multiple simultaneous calls
+    if (loadMoreRef.current || currentSkip + currentLimit >= total || isLoadingMore || loading) {
       return;
     }
 
+    loadMoreRef.current = true;
     setIsLoadingMore(true);
     try {
       await dispatch(
@@ -69,6 +72,7 @@ export function useProducts(options: UseProductsOptions = {}) {
       toast.error("Failed to load more products");
     } finally {
       setIsLoadingMore(false);
+      loadMoreRef.current = false;
     }
   }, [dispatch, currentSkip, currentLimit, total, searchQuery, category, isLoadingMore, loading]);
 

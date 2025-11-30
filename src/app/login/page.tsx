@@ -14,10 +14,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ShoppingBag, Loader2, AlertCircle } from "lucide-react";
+import { ShoppingBag, Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { MainLayout } from "@/components/layout/main-layout";
 import { spacing } from "@/lib/tailwind-utils";
+import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,6 +28,7 @@ export default function LoginPage() {
     username: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -130,24 +132,44 @@ export default function LoginPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter your password"
-                      autoComplete="current-password"
-                      disabled={loading}
-                      className={error ? "border-destructive focus-visible:ring-destructive" : ""}
-                      aria-invalid={error ? "true" : "false"}
-                      aria-describedby={error ? "error-message" : undefined}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your password"
+                        autoComplete="current-password"
+                        disabled={loading}
+                        className={cn(
+                          "pr-10",
+                          error ? "border-destructive focus-visible:ring-destructive" : ""
+                        )}
+                        aria-invalid={error ? "true" : "false"}
+                        aria-describedby={error ? "error-message" : undefined}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                        disabled={loading}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
 
                   <div className="text-sm text-muted-foreground text-center">
-                    <p>Use DummyJSON credentials (e.g., username: emilys, password: emilyspass)</p>
+                    <p>Use this credentials( username: emilys, password: emilyspass) to login</p>
                   </div>
 
                   <Button type="submit" className="w-full" disabled={loading}>

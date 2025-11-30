@@ -10,8 +10,8 @@ export const ROUTES = {
   FAVORITES: "/favorites",
   CART: "/cart",
   LOGIN: "/login",
-  PRODUCT_DETAIL: (id: number) => `/product/${id}`,
-  PRODUCT_EDIT: (id: number) => `/product/${id}/edit`,
+  PRODUCT_DETAIL: (id: number) => `/products/${id}`,
+  PRODUCT_EDIT: (id: number) => `/products/${id}/edit`,
   PRODUCT_CREATE: "/products/create",
 } as const;
 
